@@ -256,23 +256,37 @@ local freeMouse = Create("TextButton", {Name = "FMouse", Size = UDim2.new(), Bac
 local mouselock = false
 
 local function UnlockMouse(Value)
-	if Value then
-		mouselock = true
+    if Value then
+        mouselock = true
 
-		task.spawn(function() 
-			while mouselock do
-				UserInputService.MouseIconEnabled = Value
-				freeMouse.Visible = Value
-				task.wait()
-			end
+        task.spawn(function()
+            while mouselock do
+                UserInputService.MouseIconEnabled = Value
+                freeMouse.Visible = Value
+                task.wait()
+            end
 
-			UserInputService.MouseIconEnabled = false
-			freeMouse.Visible = false
-		end)
-	else
-		mouselock = false
-	end
+            UserInputService.MouseIconEnabled = false
+            freeMouse.Visible = false
+        end)
+    else
+        mouselock = false
+    end
 end
+
+UserInputService.InputBegan:Connect(function(input)
+    if input.KeyCode == Enum.KeyCode.RightShift then
+        task.wait(0.1)
+        UnlockMouse(true)
+    end
+end)
+
+UserInputService.InputEnded:Connect(function(input)
+    if input.KeyCode == Enum.KeyCode.RightShift then
+        UnlockMouse(false)
+    end
+end)
+
 
 local function CheckKey(Table, Key)
 	for _, v in next, Table do
