@@ -1988,13 +1988,13 @@ function OrionLib:MakeWindow(WindowConfig)
 	end
 	
 	local function checkMouseLock()
-		if not UIHidden then
+		if not Minimized then
 			liberarMouse()
 		else
 			bloquearMouse()
 		end
 	end
-
+	
 	checkMouseLock()
 	
 	--if writefile and isfile then
