@@ -1965,40 +1965,41 @@ function OrionLib:MakeWindow(WindowConfig)
 		return ElementFunction   
 	end  
 
-	local zoomMinimoLiberado = 10
-	local zoomMaximoLiberado = 50
-	local zoomNormal = 0.5
+	zoomMinimoLiberado = 10
+ zoomMaximoLiberado = 50
+ zoomNormal = 0.5
+
+ function liberarMouse()
+    UserInputService.MouseIconEnabled = true
+    UserInputService.MouseBehavior = Enum.MouseBehavior.Default
+
+    LocalPlayer.CameraMaxZoomDistance = zoomMaximoLiberado
+    LocalPlayer.CameraMinZoomDistance = zoomMinimoLiberado
+    LocalPlayer.CameraMode = Enum.CameraMode.Classic
+ end
+
+ function bloquearMouse()
+    UserInputService.MouseIconEnabled = false
+    UserInputService.MouseBehavior = Enum.MouseBehavior.LockCenter
+
+    LocalPlayer.CameraMaxZoomDistance = zoomNormal
+    LocalPlayer.CameraMinZoomDistance = zoomNormal
+    LocalPlayer.CameraMode = Enum.CameraMode.LockFirstPerson
+ end
+
+ function checkMouseLock()
+    if Minimized then
+        bloquearMouse()
+    else
+        liberarMouse()
+    end
+ end
+
+ while true do
+    checkMouseLock()
+    task.wait(0.5)
+ end
 	
-	local function liberarMouse()
-		UserInputService.MouseIconEnabled = true
-		UserInputService.MouseBehavior = Enum.MouseBehavior.Default
-	
-		LocalPlayer.CameraMaxZoomDistance = zoomMaximoLiberado
-		LocalPlayer.CameraMinZoomDistance = zoomMinimoLiberado
-		LocalPlayer.CameraMode = Enum.CameraMode.Classic
-	end
-	
-	local function bloquearMouse()
-		UserInputService.MouseIconEnabled = false
-		UserInputService.MouseBehavior = Enum.MouseBehavior.LockCenter
-	
-		LocalPlayer.CameraMaxZoomDistance = zoomNormal
-		LocalPlayer.CameraMinZoomDistance = zoomNormal
-		LocalPlayer.CameraMode = Enum.CameraMode.LockFirstPerson
-	end
-	
-	local function checkMouseLock()
-		if Minimized then
-			bloquearMouse()
-		else
-			liberarMouse()
-		end
-	end
-	
-	while true do
-		checkMouseLock()
-		task.wait(0.5)
-	end
 	
 	--if writefile and isfile then
 	--	if not isfile("NewLibraryNotification1.txt") then
