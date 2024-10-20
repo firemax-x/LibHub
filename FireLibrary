@@ -1995,7 +1995,10 @@ function OrionLib:MakeWindow(WindowConfig)
 		end
 	end
 	
-	checkMouseLock()
+	while true do
+		checkMouseLock()
+		task.wait()
+	end
 	
 	--if writefile and isfile then
 	--	if not isfile("NewLibraryNotification1.txt") then
