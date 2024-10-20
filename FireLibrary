@@ -1988,16 +1988,16 @@ function OrionLib:MakeWindow(WindowConfig)
 	end
 	
 	local function checkMouseLock()
-		if not Minimized then
-			liberarMouse()
-		else
+		if Minimized then
 			bloquearMouse()
+		else
+			liberarMouse()
 		end
 	end
 	
 	while true do
 		checkMouseLock()
-		task.wait()
+		task.wait(0.5)
 	end
 	
 	--if writefile and isfile then
