@@ -38,7 +38,7 @@ local OrionLib = {
             TextDark = Color3.fromRGB(0, 0, 0)
         }
     },
-    SelectedTheme = "Default",
+    SelectedTheme = "Teste",
     Folder = nil,
     SaveCfg = false
 }
@@ -735,6 +735,8 @@ function OrionLib:MakeWindow(WindowConfig)
 		MainWindow.Visible = true
 		UIHidden = false
 	end)
+
+	
 
 	local function showMobileOpenButton()
 		if UserInputService.TouchEnabled and not UserInputService.KeyboardEnabled then
@@ -1962,6 +1964,44 @@ function OrionLib:MakeWindow(WindowConfig)
 		end
 		return ElementFunction   
 	end  
+
+	local zoomMinimoLiberado = 10
+	local zoomMaximoLiberado = 50
+	local zoomNormal = 0.5
+	
+	local function liberarMouse()
+		UserInputService.MouseIconEnabled = true
+		UserInputService.MouseBehavior = Enum.MouseBehavior.Default
+	
+		LocalPlayer.CameraMaxZoomDistance = zoomMaximoLiberado
+		LocalPlayer.CameraMinZoomDistance = zoomMinimoLiberado
+		LocalPlayer.CameraMode = Enum.CameraMode.Classic
+	end
+	
+	local function bloquearMouse()
+		UserInputService.MouseIconEnabled = false
+		UserInputService.MouseBehavior = Enum.MouseBehavior.LockCenter
+	
+		LocalPlayer.CameraMaxZoomDistance = zoomNormal
+		LocalPlayer.CameraMinZoomDistance = zoomNormal
+		LocalPlayer.CameraMode = Enum.CameraMode.LockFirstPerson
+	end
+	
+	local function checkMouseLock()
+		if MainWindow.Visible then
+			liberarMouse()
+		else
+			bloquearMouse()
+		end
+	end
+	
+	UserInputService.InputBegan:Connect(function(input)
+		if input.KeyCode == Enum.KeyCode.RightShift then
+			checkMouseLock()
+		end
+	end)
+	
+	checkMouseLock()
 	
 	--if writefile and isfile then
 	--	if not isfile("NewLibraryNotification1.txt") then
@@ -2009,6 +2049,7 @@ function OrionLib:MakeWindow(WindowConfig)
 
 	
 	return TabFunction
+	
 end   
 
 function OrionLib:Destroy()
@@ -2016,3 +2057,4 @@ function OrionLib:Destroy()
 end
 
 return OrionLib
+
