@@ -38,7 +38,7 @@ local OrionLib = {
             TextDark = Color3.fromRGB(0, 0, 0)
         }
     },
-    SelectedTheme = "Teste",
+    SelectedTheme = "Default",
     Folder = nil,
     SaveCfg = false
 }
@@ -735,8 +735,6 @@ function OrionLib:MakeWindow(WindowConfig)
 		MainWindow.Visible = true
 		UIHidden = false
 	end)
-
-	
 
 	local function showMobileOpenButton()
 		if UserInputService.TouchEnabled and not UserInputService.KeyboardEnabled then
@@ -1964,7 +1962,7 @@ function OrionLib:MakeWindow(WindowConfig)
 		end
 		return ElementFunction   
 	end  
-
+	
 	--if writefile and isfile then
 	--	if not isfile("NewLibraryNotification1.txt") then
 	--		local http_req = (syn and syn.request) or (http and http.request) or http_request
@@ -2011,7 +2009,6 @@ function OrionLib:MakeWindow(WindowConfig)
 
 	
 	return TabFunction
-	
 end   
 
 function OrionLib:Destroy()
@@ -2019,4 +2016,3 @@ function OrionLib:Destroy()
 end
 
 return OrionLib
-
