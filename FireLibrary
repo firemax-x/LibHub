@@ -764,13 +764,22 @@ function OrionLib:MakeWindow(WindowConfig)
 		WindowConfig.CloseCallback()
 	end)
 	
-	AddConnection(OpenBtn.MouseButton1Up, function()
-		MainWindow.Visible = true
-		UIHidden = false
-	
+	AddConnection(CloseBtn.MouseButton1Up, function()
+		MainWindow.Visible = false
+		UIHidden = true
+		
 		if WindowConfig.FreeMouse then
-			toggleMouseLock(false)
+			UnlockMouse(false)
 		end
+		
+		OrionLib:MakeNotification({
+			Name = "Interface Hidden",
+			Content = "Tap "  .. WindowConfig.KeyToOpenWindow .. " to reopen the interface",
+			Time = 3
+		})
+
+		showMobileOpenButton()
+		WindowConfig.CloseCallback()
 	end)
 	
 	zoomMinimoLiberado = 10
@@ -792,6 +801,15 @@ function OrionLib:MakeWindow(WindowConfig)
 			LocalPlayer.CameraMode = Enum.CameraMode.Classic
 		end
 	end
+	
+	-- Escutando mudanças na visibilidade da janela
+	MainWindow:GetPropertyChangedSignal("Visible"):Connect(function()
+		if MainWindow.Visible then
+			toggleMouseLock(false) -- Libera o mouse quando a janela está visível
+		else
+			toggleMouseLock(true) -- Bloqueia o mouse quando a janela está oculta
+		end
+	end)
 
 	AddConnection(UserInputService.InputBegan, function(Input, Focus)
 		if not Focus then
