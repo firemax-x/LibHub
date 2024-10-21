@@ -772,29 +772,23 @@ function OrionLib:MakeWindow(WindowConfig)
 		if isMinimized then
 			UserInputService.MouseIconEnabled = false
 			UserInputService.MouseBehavior = Enum.MouseBehavior.LockCenter
-	
 			LocalPlayer.CameraMaxZoomDistance = zoomNormal
 			LocalPlayer.CameraMinZoomDistance = zoomNormal
 			LocalPlayer.CameraMode = Enum.CameraMode.LockFirstPerson
 		else
 			UserInputService.MouseIconEnabled = true
 			UserInputService.MouseBehavior = Enum.MouseBehavior.Default
-	
 			LocalPlayer.CameraMaxZoomDistance = zoomMaximoLiberado
 			LocalPlayer.CameraMinZoomDistance = zoomMinimoLiberado
 			LocalPlayer.CameraMode = Enum.CameraMode.Classic
 		end
 	end
 	
-	AddConnection(MainWindow:GetPropertyChangedSignal("Visible"):Connect(function()
-		if MainWindow.Visible then
-			toggleMouseLock(false)
-			UIHidden = false
-		else
-			toggleMouseLock(true)
-			UIHidden = true
-		end
-	end))
+	if MainWindow.Visible == false and UIHidden == true then
+		toggleMouseLock(true)
+	else
+		toggleMouseLock(false)
+	end
 
 	AddConnection(UserInputService.InputBegan, function(Input, Focus)
 		if not Focus then
