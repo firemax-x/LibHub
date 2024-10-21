@@ -751,7 +751,7 @@ function OrionLib:MakeWindow(WindowConfig)
 		UIHidden = true
 	
 		if WindowConfig.FreeMouse then
-			toggleMouseLock(true) -- Chama a função para bloquear o mouse ao fechar
+			toggleMouseLock(true)
 		end
 	
 		OrionLib:MakeNotification({
@@ -786,14 +786,15 @@ function OrionLib:MakeWindow(WindowConfig)
 		end
 	end
 	
-	while true do
-		if MainWindow.Visible == true and UIHidden == false then
-			toggleMouseLock(false) -- Libera o mouse
+	AddConnection(MainWindow:GetPropertyChangedSignal("Visible"):Connect(function()
+		if MainWindow.Visible then
+			toggleMouseLock(false)
+			UIHidden = false
 		else
-			toggleMouseLock(true) -- Bloqueia o mouse
+			toggleMouseLock(true)
+			UIHidden = true
 		end
-		task.wait(0.01)
-	end
+	end))
 
 	AddConnection(UserInputService.InputBegan, function(Input, Focus)
 		if not Focus then
