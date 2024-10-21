@@ -38,7 +38,7 @@ local OrionLib = {
             TextDark = Color3.fromRGB(0, 0, 0)
         }
     },
-    SelectedTheme = "Default",
+    SelectedTheme = "Teste",
     Folder = nil,
     SaveCfg = false
 }
@@ -736,6 +736,8 @@ function OrionLib:MakeWindow(WindowConfig)
 		UIHidden = false
 	end)
 
+	
+
 	local function showMobileOpenButton()
 		if UserInputService.TouchEnabled and not UserInputService.KeyboardEnabled then
 			if UIHidden then
@@ -749,20 +751,52 @@ function OrionLib:MakeWindow(WindowConfig)
 	AddConnection(CloseBtn.MouseButton1Up, function()
 		MainWindow.Visible = false
 		UIHidden = true
-		
+	
 		if WindowConfig.FreeMouse then
-			UnlockMouse(false)
+			toggleMouseLock(true) -- Chama a função para bloquear o mouse ao fechar
 		end
-		
+	
 		OrionLib:MakeNotification({
 			Name = "Interface Hidden",
-			Content = "Tap "  .. WindowConfig.KeyToOpenWindow .. " to reopen the interface",
+			Content = "Tap " .. WindowConfig.KeyToOpenWindow .. " to reopen the interface",
 			Time = 3
 		})
-
+	
 		showMobileOpenButton()
 		WindowConfig.CloseCallback()
 	end)
+	
+	zoomMinimoLiberado = 10
+	zoomMaximoLiberado = 50
+	zoomNormal = 0.5
+	
+	function toggleMouseLock(isMinimized)
+		if isMinimized then
+			UserInputService.MouseIconEnabled = false
+			UserInputService.MouseBehavior = Enum.MouseBehavior.LockCenter
+	
+			LocalPlayer.CameraMaxZoomDistance = zoomNormal
+			LocalPlayer.CameraMinZoomDistance = zoomNormal
+			LocalPlayer.CameraMode = Enum.CameraMode.LockFirstPerson
+		else
+			UserInputService.MouseIconEnabled = true
+			UserInputService.MouseBehavior = Enum.MouseBehavior.Default
+	
+			LocalPlayer.CameraMaxZoomDistance = zoomMaximoLiberado
+			LocalPlayer.CameraMinZoomDistance = zoomMinimoLiberado
+			LocalPlayer.CameraMode = Enum.CameraMode.Classic
+		end
+	end
+	
+	while true do
+		if MainWindow.Visible == true and UIHidden == false then
+			toggleMouseLock(false) -- Libera o mouse
+		else
+			toggleMouseLock(true) -- Bloqueia o mouse
+		end
+		task.wait(0.01)
+	end
+	
 
 	AddConnection(UserInputService.InputBegan, function(Input, Focus)
 		if not Focus then
@@ -1962,7 +1996,7 @@ function OrionLib:MakeWindow(WindowConfig)
 		end
 		return ElementFunction   
 	end  
-	
+
 	--if writefile and isfile then
 	--	if not isfile("NewLibraryNotification1.txt") then
 	--		local http_req = (syn and syn.request) or (http and http.request) or http_request
@@ -2009,6 +2043,7 @@ function OrionLib:MakeWindow(WindowConfig)
 
 	
 	return TabFunction
+	
 end   
 
 function OrionLib:Destroy()
@@ -2016,3 +2051,4 @@ function OrionLib:Destroy()
 end
 
 return OrionLib
+
