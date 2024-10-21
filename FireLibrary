@@ -764,6 +764,15 @@ function OrionLib:MakeWindow(WindowConfig)
 		WindowConfig.CloseCallback()
 	end)
 	
+	AddConnection(OpenBtn.MouseButton1Up, function()
+		MainWindow.Visible = true
+		UIHidden = false
+	
+		if WindowConfig.FreeMouse then
+			toggleMouseLock(false)
+		end
+	end)
+	
 	zoomMinimoLiberado = 10
 	zoomMaximoLiberado = 50
 	zoomNormal = 0.5
@@ -782,12 +791,6 @@ function OrionLib:MakeWindow(WindowConfig)
 			LocalPlayer.CameraMinZoomDistance = zoomMinimoLiberado
 			LocalPlayer.CameraMode = Enum.CameraMode.Classic
 		end
-	end
-	
-	if MainWindow.Visible == true then
-		toggleMouseLock(false)
-	else
-		toggleMouseLock(true)
 	end
 
 	AddConnection(UserInputService.InputBegan, function(Input, Focus)
