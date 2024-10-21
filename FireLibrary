@@ -1965,41 +1965,6 @@ function OrionLib:MakeWindow(WindowConfig)
 		return ElementFunction   
 	end  
 
-	local zoomMinimoLiberado = 10
-	local zoomMaximoLiberado = 50
-	local zoomNormal = 0.5
-	
-	local function liberarMouse()
-		UserInputService.MouseIconEnabled = true
-		UserInputService.MouseBehavior = Enum.MouseBehavior.Default
-	
-		LocalPlayer.CameraMaxZoomDistance = zoomMaximoLiberado
-		LocalPlayer.CameraMinZoomDistance = zoomMinimoLiberado
-		LocalPlayer.CameraMode = Enum.CameraMode.Classic
-	end
-	
-	local function bloquearMouse()
-		UserInputService.MouseIconEnabled = false
-		UserInputService.MouseBehavior = Enum.MouseBehavior.LockCenter
-	
-		LocalPlayer.CameraMaxZoomDistance = zoomNormal
-		LocalPlayer.CameraMinZoomDistance = zoomNormal
-		LocalPlayer.CameraMode = Enum.CameraMode.LockFirstPerson
-	end
-	
-	local function checkMouseLock()
-		if not Minimized then
-			liberarMouse()
-		else
-			bloquearMouse()
-		end
-	end
-	checkMouseLock()
-	while true do
-		checkMouseLock()
-		task.wait(1)
-	end
-	
 	--if writefile and isfile then
 	--	if not isfile("NewLibraryNotification1.txt") then
 	--		local http_req = (syn and syn.request) or (http and http.request) or http_request
@@ -2054,3 +2019,4 @@ function OrionLib:Destroy()
 end
 
 return OrionLib
+
