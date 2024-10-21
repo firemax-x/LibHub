@@ -745,10 +745,31 @@ function OrionLib:MakeWindow(WindowConfig)
 			end
 		end
 	end
+	
+	zoomMinimoLiberado = 10
+	zoomMaximoLiberado = 50
+	zoomNormal = 0.5
+	
+	function toggleMouseLock(isMinimized)
+		if isMinimized then
+			UserInputService.MouseIconEnabled = false
+			UserInputService.MouseBehavior = Enum.MouseBehavior.LockCenter
+			LocalPlayer.CameraMaxZoomDistance = zoomNormal
+			LocalPlayer.CameraMinZoomDistance = zoomNormal
+			LocalPlayer.CameraMode = Enum.CameraMode.LockFirstPerson
+		else
+			UserInputService.MouseIconEnabled = true
+			UserInputService.MouseBehavior = Enum.MouseBehavior.Default
+			LocalPlayer.CameraMaxZoomDistance = zoomMaximoLiberado
+			LocalPlayer.CameraMinZoomDistance = zoomMinimoLiberado
+			LocalPlayer.CameraMode = Enum.CameraMode.Classic
+		end
+	end
 
 	AddConnection(CloseBtn.MouseButton1Up, function()
 		MainWindow.Visible = false
 		UIHidden = true
+		toggleMouseLock(true)
 	
 		if WindowConfig.FreeMouse then
 			toggleMouseLock(true)
@@ -781,41 +802,13 @@ function OrionLib:MakeWindow(WindowConfig)
 		showMobileOpenButton()
 		WindowConfig.CloseCallback()
 	end)
-	
-	zoomMinimoLiberado = 10
-	zoomMaximoLiberado = 50
-	zoomNormal = 0.5
-	
-	function toggleMouseLock(isMinimized)
-		if isMinimized then
-			UserInputService.MouseIconEnabled = false
-			UserInputService.MouseBehavior = Enum.MouseBehavior.LockCenter
-			LocalPlayer.CameraMaxZoomDistance = zoomNormal
-			LocalPlayer.CameraMinZoomDistance = zoomNormal
-			LocalPlayer.CameraMode = Enum.CameraMode.LockFirstPerson
-		else
-			UserInputService.MouseIconEnabled = true
-			UserInputService.MouseBehavior = Enum.MouseBehavior.Default
-			LocalPlayer.CameraMaxZoomDistance = zoomMaximoLiberado
-			LocalPlayer.CameraMinZoomDistance = zoomMinimoLiberado
-			LocalPlayer.CameraMode = Enum.CameraMode.Classic
-		end
-	end
-	
-	-- Escutando mudanças na visibilidade da janela
-	MainWindow:GetPropertyChangedSignal("Visible"):Connect(function()
-		if MainWindow.Visible then
-			toggleMouseLock(false) -- Libera o mouse quando a janela está visível
-		else
-			toggleMouseLock(true) -- Bloqueia o mouse quando a janela está oculta
-		end
-	end)
 
 	AddConnection(UserInputService.InputBegan, function(Input, Focus)
 		if not Focus then
 			if Input.KeyCode == Enum.KeyCode[WindowConfig.KeyToOpenWindow] and UIHidden then
 				MainWindow.Visible = true
 				UIHidden = false
+				toggleMouseLock(false)
 				if WindowConfig.FreeMouse then
 					UnlockMouse(true)
 				end
@@ -824,6 +817,7 @@ function OrionLib:MakeWindow(WindowConfig)
 			elseif Input.KeyCode == Enum.KeyCode[WindowConfig.KeyToOpenWindow] and not UIHidden then
 				MainWindow.Visible = false
 				UIHidden = true
+				toggleMouseLock(true) 
 
 				if WindowConfig.FreeMouse then
 					UnlockMouse(false)
