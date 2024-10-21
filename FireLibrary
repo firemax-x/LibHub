@@ -784,10 +784,10 @@ function OrionLib:MakeWindow(WindowConfig)
 		end
 	end
 	
-	if MainWindow.Visible == false and UIHidden == true then
-		toggleMouseLock(true)
-	else
+	if MainWindow.Visible == true then
 		toggleMouseLock(false)
+	else
+		toggleMouseLock(true)
 	end
 
 	AddConnection(UserInputService.InputBegan, function(Input, Focus)
